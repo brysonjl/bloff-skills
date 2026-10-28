@@ -52,4 +52,4 @@ module.exports = (output, context) => {
 };
 ```
 
-Reference it with `type: javascript` and `value: file://assertions/state.js`. Label missing evidence as inconclusive so it can't count as a pass or a finding, and confirm the bound identity in the same check. This sees only the caller's state at the end of each test. Multi-turn strategies such as crescendo and GOAT may not pass provider metadata to the assertion at all (seen on 0.121.17), so those tests come back inconclusive here. Read back saved state for every account after the run to cover both gaps.
+Reference it with `type: javascript` and `value: file://assertions/state.js`. Label missing evidence as inconclusive so it can't count as a pass or a finding, and confirm the bound identity in the same check. This sees only the caller's state at the end of each test. Multi-turn strategies such as crescendo and GOAT may not pass provider metadata to the assertion at all (seen on 0.121.17 and 0.125.0), so those tests come back inconclusive here. Read back saved state for every account after the run to cover both gaps.
