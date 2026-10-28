@@ -25,7 +25,7 @@ Other agents that support skills have their own skill folder. Check their docs.
 
 - Tested with Promptfoo 0.125.0 on Node 22.22 or later.
 - You pick the target, the models and the scope. The skill has no target-specific endpoints, credentials or answers.
-- Hosted attack generation needs `promptfoo config set email` with your own address first.
+- Promptfoo's hosted attack generation and hosted grading need `promptfoo config set email` with your own address first. Hosted grading also needs a `redteam:` section in the config and no `OPENAI_API_KEY` set.
 - Only point it at apps you're allowed to test.
 
 ## License

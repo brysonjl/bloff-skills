@@ -74,7 +74,7 @@ Look past the chat box: retrieved content, notes, documents and other stored tex
 
 Read [Promptfoo workflow](references/promptfoo-workflow.md). Choose built-in plugins, write custom ones for the user's rules, or author exact cases, with a reason for each. Keep authorization context outside generated adversarial text.
 
-Write working files: provider, run configuration, cases, assertions and run instructions. Pin the CLI and the target, generator and judge identities. Prefer deterministic checks on saved state for objective effects. When a model judge is justified, its rubric must name the logged-in account, the record and the expected effect; a vague rubric fails valid controls. Verify assertions against a known good, known bad and connection-error example. A judge exception is not a security verdict.
+Write working files: provider, run configuration, cases, assertions and run instructions. Pin the CLI and the target, generator and judge identities (Promptfoo's hosted generator or grader counts; record it as such). Prefer deterministic checks on saved state for objective effects. When a model judge is justified, its rubric must name the logged-in account, the record and the expected effect; a vague rubric fails valid controls. Verify assertions against a known good, known bad and connection-error example. A judge exception is not a security verdict.
 
 ## 6. Strategies
 
