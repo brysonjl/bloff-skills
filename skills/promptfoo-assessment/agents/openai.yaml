@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent-led Promptfoo Assessment"
+  short_description: "Recon, attack and verify AI applications with Promptfoo"
+  default_prompt: "Use $promptfoo-assessment to assess this application, run the Promptfoo campaign, do a second pass and report, stopping at the three checkpoints."
