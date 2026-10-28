@@ -59,7 +59,7 @@ For generation, choose relevant plugins and strategies with explicit purpose and
 
 Use distinct generation and execution stages when cases need inspection before execution. Save exact generated cases and transcripts; then execute those reviewed files. `redteam run` combines generation and evaluation, so do not use it blindly for a baseline replay. Verify the installed version's commands rather than inventing flags. Retain legitimately sensitive scenario content only in approved services. See [red-team configuration](https://www.promptfoo.dev/docs/red-team/configuration/).
 
-Lessons from dry runs (0.121.17):
+Lessons from dry runs (0.121.17 and 0.125.0):
 
 - **Email first.** Promptfoo's hosted generation stops at an interactive "Work email" prompt and exits unless an email is already set. With `PROMPTFOO_CONFIG_DIR` exported, run `promptfoo config get email` before generating. If none is set, ask the user to set their own with `promptfoo config set email`, or for the address to set. Never invent or use a placeholder address.
 - **Write generated cases next to the config that runs them.** The generated file keeps the config's relative `file://` paths (provider, assertions). Writing it into a subfolder with `redteam generate -o cases/…` breaks those paths. Generate beside the run config, then move or copy it only if you fix the paths.
