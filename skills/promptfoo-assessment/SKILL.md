@@ -16,11 +16,11 @@ This skill contains no target-specific endpoints, business rules, credentials or
 | 1 | Recon | Observed behavior, source notes if available | |
 | 2 | Map | App map and connection contract | ✋ 1: check the app map |
 | 3 | Connect | Provider and a passing Promptfoo smoke run | |
-| 4 | Weak spots | Boundaries to test, each with a normal task that should work | |
+| 4 | Weak spots | Boundaries to test, each with a normal task that should work; attack matrix started | |
 | 5 | Plugins | Plugins or exact cases, assertions and rubrics | |
-| 6 | Strategies | Strategies, expected workload, budget | ✋ 2: approve the plan and budget |
+| 6 | Strategies | Strategies, attack matrix with counts and totals, budget | ✋ 2: approve the plan and budget |
 | 7 | Run | Saved generated cases and results | |
-| 8 | Review | Saved state for every test account, verdict per case | |
+| 8 | Review | Saved state for every test account, verdict per case, matrix results | |
 | | Second pass | One justified revision, back through 5–8, compared with the first run | |
 | 9 | Report | Findings with proof, false positives thrown out, next steps | ✋ 3: check the findings |
 
@@ -31,7 +31,7 @@ Use these stage names in progress updates, the manifest and the report.
 At each checkpoint, stop and end your turn. Show the user a short summary and the question below, then wait for their reply before you continue. Save the files for the stage you just finished before you stop. Don't start the next stage.
 
 1. **Check the app map** (end of Map). Show the map: who the caller is and how that's bound, which tools read and which change things, where each permission check lives (file and line when you have source), and which claims you confirmed in the running app versus only read in code. Ask whether anything is missing or wrong.
-2. **Approve the plan and budget** (end of Strategies, before anything is generated or run). Show each weak spot with its normal task, the plugins and strategies with counts, the expected number of test cases and target requests, what the run will change in the app, and every outside service that will receive data (generator, judge, Promptfoo's hosted generation and grading, and any model provider behind them). Ask for approval or changes.
+2. **Approve the plan and budget** (end of Strategies, before anything is generated or run). Show the attack matrix: each weak spot with its normal task, the plugins and strategies with counts, and the totals for test cases and target requests. Also show what the run will change in the app and every outside service that will receive data (generator, judge, Promptfoo's hosted generation and grading, and any model provider behind them). Ask for approval or changes, and ask whether they want more tests per plugin or more runs per case, with what each would cost (see [attack matrix](references/attack-matrix.md)). The default is no.
 3. **Check the findings** (end of Review or second pass, before the final report). List each finding with the saved proof that supports it, each false positive you threw out and why, and anything you couldn't decide. Ask the user to check any two against the app.
 
 If the user asks for coaching, ask them to make the call at each checkpoint (pick the hypothesis, review the diff, judge the evidence) rather than presenting yours. Skip a checkpoint only when the user says so; record that in the manifest. Never fabricate a human decision. Record your own choices as agent choices. Between checkpoints, proceed within the agreed scope without asking for further permission.
@@ -66,35 +66,35 @@ Exit: saved smoke output, an acceptance record and explicit limitations. Repair 
 
 ## 4. Weak spots
 
-Derive a small campaign from the app map and the user's rules; avoid a broad default scan. For each weak spot record the boundary, the input channel, the actual identity and preconditions, the prohibited effect, the evidence source, how you'll decide pass or fail, and a normal task that should still work. If the normal task fails, the attack result means nothing.
+Derive a small campaign from the app map and the user's rules; avoid a broad default scan. Start `attack-matrix.md`; see [attack matrix and run size](references/attack-matrix.md). For each weak spot record the boundary, the input channel, the actual identity and preconditions, the prohibited effect, the evidence source, how you'll decide pass or fail, and a normal task that should still work. If the normal task fails, the attack result means nothing.
 
 Look past the chat box: retrieved content, notes, documents and other stored text the model reads are input channels too.
 
 ## 5. Plugins
 
-Read [Promptfoo workflow](references/promptfoo-workflow.md). Choose built-in plugins, write custom ones for the user's rules, or author exact cases, with a reason for each. Keep authorization context outside generated adversarial text.
+Read [Promptfoo workflow](references/promptfoo-workflow.md). Choose built-in plugins, write custom ones for the user's rules, or author exact cases, with a reason for each. Add each to the attack matrix with its case count. Keep authorization context outside generated adversarial text.
 
 Write working files: provider, run configuration, cases, assertions and run instructions. Pin the CLI and the target, generator and judge identities (Promptfoo's hosted generator or grader counts; record it as such). Prefer deterministic checks on saved state for objective effects. When a model judge is justified, its rubric must name the logged-in account, the record and the expected effect; a vague rubric fails valid controls. Verify assertions against a known good, known bad and connection-error example. A judge exception is not a security verdict.
 
 ## 6. Strategies
 
-Choose strategies for each plugin with a reason and a count. Estimate the expanded workload: test cases after strategies, target requests including multi-turn conversations, and judge calls. Then **checkpoint 2**. Ask again only if a later change materially alters scope, budget or access.
+Choose strategies for each plugin with a reason and a count. Start small: one test per plugin, `basic` plus at most one capped multi-turn strategy, one run per case, unless the user asked for more. Fill the matrix's request estimates and totals: test cases after strategies, target requests including multi-turn conversations, and judge calls. Build the configuration from the matrix. Then **checkpoint 2**. Ask again only if a later change materially alters scope, budget or access.
 
 ## 7. Run
 
-Generate and save cases before running them, then run the saved files through the provider. Check the expanded test count against the plan before trusting any pass rate. Retain the command, exit status, raw output and failures. Mark recorded, scripted and demo runs as such.
+Generate and save cases before running them, then run the saved files through the provider. Check the generated and executed counts against the attack matrix, row by row, before trusting any pass rate. Retain the command, exit status, raw output and failures. Mark recorded, scripted and demo runs as such.
 
 ## 8. Review
 
 Read [iteration and evidence](references/iteration-and-evidence.md). After every run, read back saved state for every test account, not just the attacker's. Promptfoo's own checks miss multi-turn effects and effects on other accounts. If reading another account means switching identity and that resets the conversation, read back after each conversation ends.
 
-Inspect actual outputs and state rather than the aggregate pass rate. Sort results into: it happened (saved state proves the rule was broken), it didn't happen (clean run, nothing broke), and can't tell (missing evidence or errors). Keep connection, setup and judge problems separate from security verdicts. A failed HTTP response can coexist with a saved change. A refusal alone does not prove the backend enforces the rule.
+Inspect actual outputs and state rather than the aggregate pass rate. Sort results into: it happened (saved state proves the rule was broken), it didn't happen (clean run, nothing broke), and can't tell (missing evidence or errors). Fill the matrix's Results table with these counts and evidence paths. Keep connection, setup and judge problems separate from security verdicts. A failed HTTP response can coexist with a saved change. A refusal alone does not prove the backend enforces the rule.
 
 ## Second pass
 
 Choose one evidence-linked improvement: fix a wrong check, repair the provider, refine purpose or context, push on what nearly worked, add a channel the first run missed, or change a strategy. Save the rationale and diff as a new configuration version. Do not weaken a valid assertion or remove failures to raise the score. Changing the application itself needs remediation scope and a separately labeled comparison.
 
-Run it; do not stop at proposing it. Go back through Plugins, Strategies, Run and Review. Keep unchanged cases and a normal task under equivalent preconditions, and label new or changed cases separately. Reuse saved generated inputs for comparable replay. Adaptive strategies produce new conversations even with the same seeds; retain those transcripts and state the comparison limits.
+Run it; do not stop at proposing it. Go back through Plugins, Strategies, Run and Review, adding pass 2 rows to the attack matrix. Keep it within the approved budget, or ask first. Keep unchanged cases and a normal task under equivalent preconditions, and label new or changed cases separately. Reuse saved generated inputs for comparable replay. Adaptive strategies produce new conversations even with the same seeds; retain those transcripts and state the comparison limits.
 
 If the provider or judge was defective, separate a corrected first run from a measured second pass. Regrade saved outputs with both rubric versions where possible; do not compare different judges as if target behavior changed. Count repair reruns, setup and debug calls against the budget. Stop after one second pass unless more are requested.
 
@@ -102,6 +102,6 @@ Exit: executed second-run artifacts and an honest comparison of common cases, ne
 
 ## 9. Report
 
-Deliver the files, concise findings and reproduction steps. State which stages actually ran, the access, mode, models and versions, attempt counts, assistance, limitations and the next thing to test. Use unknown for unavailable token or cost data. Strip personal data Promptfoo wrote into shared files (see [artifacts and handoff](references/artifacts-and-handoff.md)). Never claim a blocked, scripted or unexecuted run as a successful live assessment.
+Deliver the files, the completed attack matrix, concise findings and reproduction steps. State which stages actually ran, the access, mode, models and versions, attempt counts, assistance, limitations and the next thing to test. Use unknown for unavailable token or cost data. Strip personal data Promptfoo wrote into shared files (see [artifacts and handoff](references/artifacts-and-handoff.md)). Never claim a blocked, scripted or unexecuted run as a successful live assessment.
 
 If an execution platform blocks the task, preserve the interruption and continue unrelated permitted analysis. Do not route the blocked action to another model or tool to evade the restriction.

@@ -6,6 +6,7 @@ Use an existing sensible layout or this engagement layout; never write results i
 engagement/
   scope.md                    # decisions, access, limits, permitted effects
   discovery.md                # map, contract, evidence, unknowns
+  attack-matrix.md            # plan rows, counts, totals, results; see attack-matrix.md
   manifest.json               # versions, phase status, hashes, counts, paths
   provider.mjs                # or supported alternative
   promptfooconfig.smoke.yaml
@@ -27,4 +28,4 @@ A phase is planned, in progress, executed, verified or blocked; use those words 
 
 Promptfoo writes the user's email (the one set for hosted generation) into generated case files (an `# Author:` header), results JSON (`author`), debug logs and `.promptfoo/`. Strip or replace it in anything shared, and leave `.promptfoo/` out of the handoff.
 
-The final report answers: what was assessed, under which access/model/mode, what worked, what failed, what evidence supports the findings, what changed in the second configuration, what the second evaluation showed, what remains uncertain and how to reproduce. Include useful negative findings, operational failures and assistance. Target safety and assessment coverage are different conclusions.
+The attack matrix is shareable once payload links point at redacted copies. The final report answers: what was assessed, under which access/model/mode, what worked, what failed, what evidence supports the findings, what changed in the second configuration, what the second evaluation showed, what remains uncertain and how to reproduce. Include useful negative findings, operational failures and assistance. Target safety and assessment coverage are different conclusions.

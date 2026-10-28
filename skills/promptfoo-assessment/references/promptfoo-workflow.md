@@ -55,7 +55,7 @@ Save stdout/stderr, exit status and immutable input hashes. Use distinct paths f
 
 ## Generated campaigns
 
-For generation, choose relevant plugins and strategies with explicit purpose and count. Identify the generator and grader separately from the target. Verify and control any remote generation path; a small seed count does not bound adaptive target calls.
+For generation, choose relevant plugins and strategies with explicit purpose and count. Size the run with the defaults in [attack matrix and run size](attack-matrix.md); Promptfoo's own defaults (5 tests per plugin, 10-turn crescendo) are much larger than a focused campaign needs. Identify the generator and grader separately from the target. Verify and control any remote generation path; a small seed count does not bound adaptive target calls.
 
 Use distinct generation and execution stages when cases need inspection before execution. Save exact generated cases and transcripts; then execute those reviewed files. `redteam run` combines generation and evaluation, so do not use it blindly for a baseline replay. Verify the installed version's commands rather than inventing flags. Retain legitimately sensitive scenario content only in approved services. See [red-team configuration](https://www.promptfoo.dev/docs/red-team/configuration/).
 
