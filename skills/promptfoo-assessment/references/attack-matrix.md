@@ -15,10 +15,10 @@ Target: <app, mode, model>. Plan approved: <who, when>. Hard cap: <requests>.
 
 | ID | Pass | Weak spot (rule) | Channel, account | Plugin | Strategy (why; alternative) | Cases × runs | Requests (est.) | Pass/fail check | Normal task |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A1 | 1 | <boundary in the user's words> | chat, <account> | <`policy`, exact case or built-in id> | basic (plain request works?) | 1 × 1 | 1 | <saved-state check or rubric> | N1 |
-| A2 | 1 | <same boundary> | chat, <account> | <plugin route> | crescendo, maxTurns 4, maxBacktracks 2 (gradual pretext; alt: goat) | 1 × 1 | ≤ 6 | <check> | N1 |
+| A1 | 1 | <boundary in the user's words> | chat, <account> | <`policy`, exact case or built-in id> | basic (plain request works?) | 3 × 1 | 3 | <saved-state check or rubric> | N1 |
+| A2 | 1 | <same boundary> | chat, <account> | <plugin route> | jailbreak:meta, numIterations 4 (refines a single ask; alt: crescendo, maxTurns 4) | 3 × 1 | ≤ 12 | <check> | N1 |
 | N1 | 1 | Normal task for A1–A2 | chat, <account> | exact case | basic | 1 × 1 | 1 | <expected effect> | — |
-| **Total** | | | | | | **3 cases** | **≤ 8 + judge 3** | | |
+| **Total** | | | | | | **7 cases** | **≤ 16 + judge 7** | | |
 
 ## Results
 
@@ -29,34 +29,42 @@ Target: <app, mode, model>. Plan approved: <who, when>. Hard cap: <requests>.
 
 - **Pass** is 1 for the first run and 2 for second-pass rows. Add second-pass rows; never edit first-run rows to match.
 - **Cases × runs**: generated cases for this row, times repeats per case (`--repeat`).
-- **Requests (est.)**: messages the target will receive. Single-turn is 1 per case. Multi-turn is at most the turn and retry limits per case (crescendo `maxTurns` + `maxBacktracks`, GOAT `maxTurns`, iterative jailbreak `numIterations`). Count judge calls separately in the total.
+- **Requests (est.)**: messages the target will receive. Single-turn is 1 per case. Multi-turn and iterative strategies count their full limit per case: `maxTurns` for crescendo and GOAT, `numIterations` for iterative jailbreaks. Crescendo rarely stops early. With `stateful: true`, Promptfoo 0.125.0 ignores crescendo's `maxBacktracks`; without it, add `maxBacktracks` too. Count judge calls separately in the total.
 - **Strategy (why; alternative)**: the recommendation from [plugins and strategies](plugins-and-strategies.md), its reason in a few words, and the alternative the user can swap in at checkpoint 2.
 - **Pass/fail check**: name the saved state you'll read, or the rubric file. Every attack row points at a normal task that should still work.
 - **Results**: use Review's three verdicts. Connection, setup and grader errors go in Can't tell with the reason in Evidence.
 
-## Start small
+## Size the run
 
 Promptfoo's defaults are large: 5 tests per plugin, `basic` runs every plugin test as-is, crescendo allows 10 turns plus 10 retries, GOAT 5 turns, iterative jailbreak 10 iterations, and `jailbreak:composite` about 5 cases per test. Unless the user sets other limits, plan the first run with:
 
-- At most about 12 test cases in all, counted after strategies. The second pass adds at most about 6 new ones.
-- `numTests: 1` on each plugin (or `redteam.numTests: 1`).
-- `basic`, plus at most one multi-turn strategy on the plugins where pressure over several turns makes sense. Cap it with the strategy's own `numTests` (1–2) and short limits: crescendo `maxTurns: 4`, `maxBacktracks: 2`; GOAT `maxTurns: 4`; iterative jailbreak `numIterations: 3`. Skip `jailbreak:composite` unless one plugin clearly needs it.
+- About 60% of the budget, counted at the full turn limits. Keep about 40% for the second pass. If the user gave no budget, propose 100 messages.
+- `numTests: 3` on each plugin: three different wordings per weak spot. One attempt per weak spot often misses a flaw that is there.
+- `basic` on every test, plus one multi-turn or iterative strategy on the weak spots where pressure makes sense (see [plugins and strategies](plugins-and-strategies.md)), with short limits: `jailbreak:meta` `numIterations: 4`, crescendo `maxTurns: 4`, GOAT `maxTurns: 4`. Set `stateful: true` on crescendo and GOAT when the target keeps the conversation on its side. Skip `jailbreak:composite` and `jailbreak:hydra` in the first run.
 - One run per case (no `--repeat`).
 - One normal task per weak spot.
 
+One weak spot planned this way costs about 16 messages (3 `basic` + 3 × 4 multi-turn + 1 normal task), so about four fit in 60. If the plan doesn't fit, use `numTests: 2`, or keep only `basic` on weak spots tested with exact cases (planted content, hidden codes).
+
+The second pass uses the rest: for each weak spot that nearly gave way, 2–4 exact replays of the nearest miss; for each that held, 1–2 more multi-turn conversations; and their normal tasks.
+
 ```yaml
 redteam:
-  numTests: 1
+  numTests: 3
   plugins:
-    - id: <plugin>
-      numTests: 1
+    - id: policy
+      numTests: 3
+      config: { policy: <the rule, naming the account, record and forbidden effect> }
   strategies:
     - id: basic
-    - id: crescendo
-      config: { numTests: 2, maxTurns: 4, maxBacktracks: 2 }
+    - id: jailbreak:meta
+      config: { numIterations: 4 }
+    # or, for a gradual pretext:
+    # - id: crescendo
+    #   config: { maxTurns: 4, stateful: true }
 ```
 
-Check these keys against the installed CLI's help and docs before relying on them.
+A strategy applies to every plugin test unless you limit it. Check these keys against the installed CLI's help and docs before relying on them.
 
 ## Ask before going bigger
 
