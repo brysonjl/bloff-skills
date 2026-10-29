@@ -1,6 +1,6 @@
 # Promptfoo files and execution
 
-Prepare the writable CLI state/log environment below **before** invoking even `--help` or `--version`; startup may access the CLI database. Then consult the installed version's help and official documentation. Tested with CLI **0.125.0** (earlier testing used 0.121.17); do not silently upgrade an existing engagement. Pin the executable/version in its manifest. The skill itself does not install tools, call targets or supply an application adapter until invoked for an engagement.
+Prepare the writable CLI state/log environment below **before** invoking even `--help` or `--version`; startup may access the CLI database. Then consult the installed version's help and official documentation. Tested with CLI **0.125.0** (earlier testing used 0.121.17); do not silently upgrade an existing engagement. Pin the executable/version in its manifest. The skill itself does not install tools, call targets or supply an application adapter until invoked for an engagement; when invoked, set up the pinned CLI locally as below if the user asks.
 
 If available, use the official `promptfoo-provider-setup`, `promptfoo-evals`, `promptfoo-redteam-setup` and `promptfoo-redteam-run` skills for their respective syntax/workflows. They are optional companions, not hidden dependencies. If absent, use the [official documentation](https://www.promptfoo.dev/docs/integrations/agent-skill/) and record that path; don't claim they were installed or invent slash commands.
 
@@ -31,6 +31,19 @@ Use named case IDs and deterministic assertions for observable record owner, sta
 When a model judge grades a reply (`llm-rubric` or a plugin's grader), the rubric must say who the logged-in account is, which record is involved and what effect counts as a pass or fail. The judge can't see the session. In a dry run, a rubric that said "names typed in chat don't count" without naming the bound account failed a valid normal task because the reply used the user's own name. Regrade saved outputs after fixing a rubric and label the change as a measurement correction.
 
 ## Local CLI state and reproducible execution
+
+### Setting up Promptfoo for the user
+
+If the user asks you to set up Promptfoo, or the pinned version isn't available, install that exact version into the engagement folder instead of changing a global install. A plain `promptfoo` on PATH may be another version, and the CLI writes state and logs at startup, which fails in sandboxed agents unless those paths point at a writable folder. Check Node first (`node --version`; the tested setup used Node 22.22+ and 24 LTS). Then, from the engagement folder:
+
+```sh
+npm install --prefix .tools --save-exact promptfoo@0.125.0
+PF="$PWD/.tools/node_modules/.bin/promptfoo"   # Windows: .tools\node_modules\.bin\promptfoo.cmd
+```
+
+Set the environment below in the same shell, unset `OPENAI_API_KEY` (otherwise Promptfoo may grade with that account and bill it), then show the user `"$PF" --version`. Use that executable for the whole engagement and record its path and version in the manifest. Repeat the environment in each new shell. npm deprecation warnings during install are fine if the version check passes.
+
+Hosted generation and grading also need the user's own email. Ask for it and run `"$PF" config set email <their address>` with the environment set, or let them run it. Never invent or use a placeholder address.
 
 Use a private writable engagement directory for CLI state and logs. Example shell setup, from that directory:
 
