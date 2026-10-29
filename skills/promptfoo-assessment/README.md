@@ -34,6 +34,7 @@ At each ✋ the agent stops, shows you a short summary and waits for your answer
 
 - **Normal tasks.** Every attack is paired with a normal request that should still work. If the normal request fails, the attack result doesn't count.
 - **Saved state, not replies.** Pass and fail come from what the app saved, for every test account, not from what the model said it did.
+- **Attacks written for your rules.** Built-in plugins rarely match a business rule, so the agent writes most attacks itself (a `policy` plugin per rule, exact cases for planted content) and adds built-ins only where they fit. For each weak spot it recommends a strategy with its reason, cost and an alternative, and you approve or swap them at the plan checkpoint.
 - **Small first runs.** One test per plugin, `basic` plus one capped multi-turn strategy, one run per case, about 12 test cases at most, then about 6 new ones on the second pass. It asks before going bigger.
 - **Your budget is a hard cap.** By default it counts messages to the app's AI assistant, Promptfoo's included. A clean result is a real result: when the work is done, it stops instead of spending what's left.
 
@@ -57,6 +58,7 @@ Then tell your agent about the target. The method is in the skill, so you only d
 | [references/intake-and-discovery.md](references/intake-and-discovery.md) | Questions to ask first, and how to map the app |
 | [references/adapter-acceptance.md](references/adapter-acceptance.md) | What the Promptfoo provider has to prove before results count |
 | [references/attack-matrix.md](references/attack-matrix.md) | The plan file, run sizes and when to ask for more |
+| [references/plugins-and-strategies.md](references/plugins-and-strategies.md) | Writing your own attacks, matching built-ins and choosing strategies |
 | [references/promptfoo-workflow.md](references/promptfoo-workflow.md) | Promptfoo setup, commands and lessons from test runs |
 | [references/iteration-and-evidence.md](references/iteration-and-evidence.md) | Verdicts, the second pass and how to compare runs |
 | [references/artifacts-and-handoff.md](references/artifacts-and-handoff.md) | Engagement folder layout and what to strip before sharing |

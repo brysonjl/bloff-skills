@@ -13,10 +13,10 @@ Target: <app, mode, model>. Plan approved: <who, when>. Hard cap: <requests>.
 
 ## Plan
 
-| ID | Pass | Weak spot (rule) | Channel, account | Plugin | Strategy | Cases × runs | Requests (est.) | Pass/fail check | Normal task |
+| ID | Pass | Weak spot (rule) | Channel, account | Plugin | Strategy (why; alternative) | Cases × runs | Requests (est.) | Pass/fail check | Normal task |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A1 | 1 | <boundary in the user's words> | chat, <account> | <plugin id or "exact case"> | basic | 1 × 1 | 1 | <saved-state check or rubric> | N1 |
-| A2 | 1 | <same boundary> | chat, <account> | <plugin id> | crescendo (maxTurns 4, maxBacktracks 2) | 1 × 1 | ≤ 6 | <check> | N1 |
+| A1 | 1 | <boundary in the user's words> | chat, <account> | <`policy`, exact case or built-in id> | basic (plain request works?) | 1 × 1 | 1 | <saved-state check or rubric> | N1 |
+| A2 | 1 | <same boundary> | chat, <account> | <plugin route> | crescendo, maxTurns 4, maxBacktracks 2 (gradual pretext; alt: goat) | 1 × 1 | ≤ 6 | <check> | N1 |
 | N1 | 1 | Normal task for A1–A2 | chat, <account> | exact case | basic | 1 × 1 | 1 | <expected effect> | — |
 | **Total** | | | | | | **3 cases** | **≤ 8 + judge 3** | | |
 
@@ -30,6 +30,7 @@ Target: <app, mode, model>. Plan approved: <who, when>. Hard cap: <requests>.
 - **Pass** is 1 for the first run and 2 for second-pass rows. Add second-pass rows; never edit first-run rows to match.
 - **Cases × runs**: generated cases for this row, times repeats per case (`--repeat`).
 - **Requests (est.)**: messages the target will receive. Single-turn is 1 per case. Multi-turn is at most the turn and retry limits per case (crescendo `maxTurns` + `maxBacktracks`, GOAT `maxTurns`, iterative jailbreak `numIterations`). Count judge calls separately in the total.
+- **Strategy (why; alternative)**: the recommendation from [plugins and strategies](plugins-and-strategies.md), its reason in a few words, and the alternative the user can swap in at checkpoint 2.
 - **Pass/fail check**: name the saved state you'll read, or the rubric file. Every attack row points at a normal task that should still work.
 - **Results**: use Review's three verdicts. Connection, setup and grader errors go in Can't tell with the reason in Evidence.
 
