@@ -66,6 +66,23 @@ promptfoo eval --config promptfooconfig.baseline.yaml --no-cache --max-concurren
 
 Save stdout/stderr, exit status and immutable input hashes. Use distinct paths for repair reruns and the second config/result. Never overwrite the initial failed result. Local logs/CLI databases can contain test data; keep them outside the publishable report. `--no-share` is not a network sandbox: configured targets, generators, graders and remote generation services may still receive data. Review those destinations first. See [CLI reference](https://www.promptfoo.dev/docs/usage/command-line/).
 
+## Viewing results in the browser
+
+Promptfoo has a local web viewer for saved evaluations. Offer it at the findings checkpoint, and whenever the user wants to look through cases themselves. Start it only when they say yes.
+
+```sh
+# Same environment as the runs, so it reads this engagement's results.
+"$PF" view -y                  # every case: prompts, replies, grader reasons
+"$PF" redteam report -y        # the same viewer, opened on the red team report page
+```
+
+- Run it in the background from the engagement folder, with `PROMPTFOO_CONFIG_DIR` and the other variables set as for the runs. Otherwise it shows a different, usually empty, results store.
+- `-y` opens the user's default browser. If the browser doesn't open, or you can't open one, give the user the link: `http://localhost:15500`, or the port you passed with `--port`.
+- Tell the user which run is which: the viewer lists each evaluation by its description and time.
+- Say plainly that the viewer shows Promptfoo's own pass/fail grading of the replies. Your verdicts come from saved state, so the two can differ. Point out any case where they do.
+- In CLI 0.125.0 the viewer listens on every network interface, not just this computer. On a shared network others could open it while it runs. Stop it as soon as the user is done, and don't leave it running between sessions.
+- Results the viewer shows can include the user's email. Don't share screenshots of it without stripping that.
+
 ## Generated campaigns
 
 For generation, choose relevant plugins and strategies with explicit purpose and count. Size the run with the defaults in [attack matrix and run size](attack-matrix.md); Promptfoo's own defaults (5 tests per plugin, 10-turn crescendo) are much larger than a focused campaign needs. Identify the generator and grader separately from the target. Verify and control any remote generation path; a small seed count does not bound adaptive target calls.

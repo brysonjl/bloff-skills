@@ -36,6 +36,7 @@ At each ✋ the agent stops, shows you a short summary and waits for your answer
 - **Saved state, not replies.** Pass and fail come from what the app saved, for every test account, not from what the model said it did.
 - **Attacks written for your rules.** Built-in plugins rarely match a business rule, so the agent writes most attacks itself (a `policy` plugin per rule, exact cases for planted content) and adds built-ins only where they fit. For each weak spot it recommends a strategy with its reason, cost and an alternative, and you approve or swap them at the plan checkpoint.
 - **Small first runs.** One test per plugin, `basic` plus one capped multi-turn strategy, one run per case, about 12 test cases at most, then about 6 new ones on the second pass. It asks before going bigger.
+- **See it yourself.** At the findings checkpoint the agent offers to open Promptfoo's results viewer in your browser, so you can read every case. It explains where Promptfoo's grading differs from the saved-state verdicts, and stops the viewer when you're done.
 - **Your budget is a hard cap.** By default it counts messages to the app's AI assistant, Promptfoo's included. A clean result is a real result: when the work is done, it stops instead of spending what's left.
 
 ## What you get
