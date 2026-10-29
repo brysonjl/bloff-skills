@@ -8,6 +8,7 @@ The agent reads `SKILL.md` and the files in `references/`. This README is for pe
 
 ```mermaid
 flowchart TD
+    ST["Start<br/>your target, access, accounts, rules, budget<br/>it asks for anything missing"] --> R
     R["1. Recon<br/>use the app, read source if you have it"] --> M["2. Map<br/>caller, tools, permission checks"]
     M --> C1{{"✋ Check the app map"}}
     C1 --> CO["3. Connect<br/>Promptfoo provider + smoke run"]
@@ -33,7 +34,8 @@ At each ✋ the agent stops, shows you a short summary and waits for your answer
 
 - **Normal tasks.** Every attack is paired with a normal request that should still work. If the normal request fails, the attack result doesn't count.
 - **Saved state, not replies.** Pass and fail come from what the app saved, for every test account, not from what the model said it did.
-- **Small first runs.** One test per plugin, `basic` plus one capped multi-turn strategy, one run per case. It asks before going bigger.
+- **Small first runs.** One test per plugin, `basic` plus one capped multi-turn strategy, one run per case, about 12 test cases at most, then about 6 new ones on the second pass. It asks before going bigger.
+- **Your budget is a hard cap.** By default it counts messages to the app's AI assistant, Promptfoo's included. A clean result is a real result: when the work is done, it stops instead of spending what's left.
 
 ## What you get
 
@@ -45,7 +47,7 @@ An engagement folder outside the skill with the scope, app map, attack matrix, P
 - Node 22.22 or later. The agent can install the pinned Promptfoo version (0.125.0) into the engagement folder for you.
 - Your own email set in Promptfoo if you use its hosted generation or grading.
 
-Then ask your agent something like: *"Use promptfoo-assessment to assess the app at <url>. Black box, these two test accounts, budget of 100 requests."*
+Then tell your agent about the target. The method is in the skill, so you only describe the app: the URL, black box or source (and where), the test accounts and how to switch them, the rules it should enforce, what the run may change, the budget and stop time, and which outside services may see your data. It asks for anything you leave out. For example: *"Use promptfoo-assessment to assess the app at <url>. Black box, these two test accounts, these three rules, resets allowed, Promptfoo's hosted grading, budget of 100 messages, stop at 5pm."*
 
 ## Files
 

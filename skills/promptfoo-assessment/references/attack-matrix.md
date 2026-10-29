@@ -35,8 +35,9 @@ Target: <app, mode, model>. Plan approved: <who, when>. Hard cap: <requests>.
 
 ## Start small
 
-Promptfoo's defaults are large: 5 tests per plugin, `basic` runs every plugin test as-is, crescendo allows 10 turns plus 10 retries, GOAT 5 turns, iterative jailbreak 10 iterations, and `jailbreak:composite` about 5 cases per test. Unless the user asks for more, plan the first run with:
+Promptfoo's defaults are large: 5 tests per plugin, `basic` runs every plugin test as-is, crescendo allows 10 turns plus 10 retries, GOAT 5 turns, iterative jailbreak 10 iterations, and `jailbreak:composite` about 5 cases per test. Unless the user sets other limits, plan the first run with:
 
+- At most about 12 test cases in all, counted after strategies. The second pass adds at most about 6 new ones.
 - `numTests: 1` on each plugin (or `redteam.numTests: 1`).
 - `basic`, plus at most one multi-turn strategy on the plugins where pressure over several turns makes sense. Cap it with the strategy's own `numTests` (1–2) and short limits: crescendo `maxTurns: 4`, `maxBacktracks: 2`; GOAT `maxTurns: 4`; iterative jailbreak `numIterations: 3`. Skip `jailbreak:composite` unless one plugin clearly needs it.
 - One run per case (no `--repeat`).

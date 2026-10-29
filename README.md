@@ -30,8 +30,9 @@ Kiro can also import a skill from its GitHub folder URL. OpenCode also reads the
 ## promptfoo-assessment
 
 - Tested with Promptfoo 0.125.0 on Node 22.22 or later.
-- It plans the campaign in `attack-matrix.md` (weak spot, plugin, strategy, case and request counts, then results) and starts small: one test per plugin and one capped multi-turn strategy. It asks before running more.
-- You pick the target, the models and the scope. The skill has no target-specific endpoints, credentials or answers.
+- It plans the campaign in `attack-matrix.md` (weak spot, plugin, strategy, case and request counts, then results) and starts small: one test per plugin, one capped multi-turn strategy, about 12 test cases, then about 6 new ones on the second pass. It asks before running more.
+- You pick the target, the models and the scope. The skill has no target-specific endpoints, credentials or answers. Your prompt only describes the target: URL, access, test accounts, rules, what it may change, budget and stop time, and which outside services may see data. It asks for anything missing.
+- Your budget is a hard cap. By default it counts messages to the app's AI assistant, Promptfoo's included. It stops when the work is done, even with budget left.
 - Promptfoo's hosted attack generation and hosted grading need `promptfoo config set email` with your own address first. Hosted grading also needs a `redteam:` section in the config and no `OPENAI_API_KEY` set.
 - Only point it at apps you're allowed to test.
 

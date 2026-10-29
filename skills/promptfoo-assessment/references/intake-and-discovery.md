@@ -1,12 +1,12 @@
 # Intake and discovery
 
-Start with what the user and available authorized artifacts already establish. Ask in small groups, adapting the next questions to what you learn. Do not demand a full questionnaire before useful work.
+Start with what the user and available authorized artifacts already establish. Get the minimum context listed in SKILL.md's "Start or resume" before Recon: target, access, test accounts, rules, allowed changes, budget and stop time, and outside services. Beyond that, ask in small groups, adapting the next questions to what you learn. Do not demand a full questionnaire before useful work.
 
 ## Questions that change the assessment
 
 - **Purpose and policy:** What does the application do, for whom? Which legitimate workflow must keep working? What outcome would constitute a business/security failure? Which rules are supplied policy, and which are hypotheses?
 - **Scope and access:** Which environment, URLs/interfaces and accounts are in scope? Is this black-box, source-assisted or an existing assessment continuation? Are source, public client assets, API specifications or traffic captures available? Which writes, test fixtures, resets and cleanup are permitted?
-- **Execution envelope:** What is the total target-request/time/spend limit, including setup, debug and both evaluations? Which calls count against it (for example, only messages that reach the model)? Which target, generator and grader models/providers are already approved? May application content go to those services? Are concurrency and disruptive actions constrained?
+- **Execution envelope:** What is the total target-request/time/spend limit, including setup, debug and both evaluations? Which calls count against it? Unless the user says otherwise, count messages sent to the target's AI assistant, Promptfoo's included, and not session, state, account-switch, reset or other plain UI/API calls. Which target, generator and grader models/providers are already approved? May application content go to those services? Are concurrency and disruptive actions constrained?
 - **Evidence and delivery:** What public state or private audit evidence can verify effects? Who can retrieve privileged records? Where should artifacts go? Does the user want coaching checkpoints or direct execution assistance?
 
 Ask for credential environment-variable names or secure setup paths, not secret values pasted into the conversation. If a URL alone is supplied, learn purpose, access and execution scope before probing it. A local fixture already explicitly authorized for testing does not need repeated authorization questions.
