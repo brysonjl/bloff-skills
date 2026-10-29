@@ -60,4 +60,4 @@ Then ask your agent something like: *"Use promptfoo-assessment to assess the app
 | [references/artifacts-and-handoff.md](references/artifacts-and-handoff.md) | Engagement folder layout and what to strip before sharing |
 | [agents/openai.yaml](agents/openai.yaml) | Display name and default prompt for Codex |
 
-Install steps for each agent are in the [repo README](../../README.md#install).
+Install steps for each agent are in the [repo README](https://github.com/brysonjl/bloff-skills#install).
