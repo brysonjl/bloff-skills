@@ -8,7 +8,7 @@ Agent skills I use and share. Each folder under `skills/` is one skill: a `SKILL
 
 ## Install
 
-Copy a skill folder into your agent's skill directory.
+The skills use the open [Agent Skills](https://agentskills.io) format, so they aren't tied to one agent. Copy a skill folder into your agent's skill directory.
 
 ```sh
 # Claude Code, this project only
@@ -17,9 +17,15 @@ mkdir -p .claude/skills && cp -R skills/promptfoo-assessment .claude/skills/
 mkdir -p ~/.claude/skills && cp -R skills/promptfoo-assessment ~/.claude/skills/
 # Codex, this project only
 mkdir -p .agents/skills && cp -R skills/promptfoo-assessment .agents/skills/
+# Kiro, this project only
+mkdir -p .kiro/skills && cp -R skills/promptfoo-assessment .kiro/skills/
+# Kiro, every project
+mkdir -p ~/.kiro/skills && cp -R skills/promptfoo-assessment ~/.kiro/skills/
+# OpenCode, this project only
+mkdir -p .opencode/skills && cp -R skills/promptfoo-assessment .opencode/skills/
 ```
 
-Other agents that support skills have their own skill folder. Check their docs.
+Kiro can also import a skill from its GitHub folder URL. OpenCode also reads the Claude Code folders above. Other agents that support skills have their own skill folder. Check their docs.
 
 ## promptfoo-assessment
 
