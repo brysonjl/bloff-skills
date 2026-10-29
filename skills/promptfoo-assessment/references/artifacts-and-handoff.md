@@ -15,6 +15,7 @@ engagement/
   cases/                      # exact inputs, stable IDs, separate holdouts
   assertions/                 # when checks need reusable code
   runs/                       # smoke, baseline, repairs, secondary; never overwrite
+  evidence/                   # built by scripts/evidence.mjs: index, one page per matrix row, verdicts.json
   iteration.md                # evidence-linked rationale and diff
   report.md                   # supported findings, comparison, limitations
   artifacts/                  # redacted evidence you can share
@@ -28,4 +29,4 @@ A phase is planned, in progress, executed, verified or blocked; use those words 
 
 Promptfoo writes the user's email (the one set for hosted generation) into generated case files (an `# Author:` header), results JSON (`author`), debug logs and `.promptfoo/`. Strip or replace it in anything shared, and leave `.promptfoo/` out of the handoff.
 
-The attack matrix is shareable once payload links point at redacted copies. The final report answers: what was assessed, under which access/model/mode, what worked, what failed, what evidence supports the findings, what changed in the second configuration, what the second evaluation showed, what remains uncertain and how to reproduce. Include useful negative findings, operational failures and assistance. Target safety and assessment coverage are different conclusions.
+The attack matrix and `evidence/` are shareable once you've checked them for anything the user wouldn't share: evidence pages carry full transcripts and the saved state the provider returned. The final report answers: what was assessed, under which access/model/mode, what worked, what failed, what evidence supports the findings, what changed in the second configuration, what the second evaluation showed, what remains uncertain and how to reproduce. Include useful negative findings, operational failures and assistance. Target safety and assessment coverage are different conclusions.

@@ -36,7 +36,7 @@ At each ✋ the agent stops, shows you a short summary and waits for your answer
 - **Saved state, not replies.** Pass and fail come from what the app saved, for every test account, not from what the model said it did.
 - **Attacks written for your rules.** Built-in plugins rarely match a business rule, so the agent writes most attacks itself (a `policy` plugin per rule, exact cases for planted content) and adds built-ins only where they fit. For each weak spot it recommends a strategy with its reason, cost and an alternative, and you approve or swap them at the plan checkpoint.
 - **Sized first runs.** Three tests per plugin, `basic` plus one capped multi-turn or iterative strategy, one run per case, about 60% of the budget; the second pass gets the rest. It asks before going bigger.
-- **See it yourself.** At the findings checkpoint the agent offers to open Promptfoo's results viewer in your browser, so you can read every case. It explains where Promptfoo's grading differs from the saved-state verdicts, and stops the viewer when you're done.
+- **Evidence you can browse.** After every run the agent builds `evidence/`: an index with one line per attack, and a page per attack with each case's full transcript, its verdict (Exploited, Not exploited or Inconclusive), Promptfoo's own result, the saved state and a link to the eval. At the findings checkpoint it points you there, and offers to open Promptfoo's results viewer as well.
 - **Your budget is a hard cap.** By default it counts messages to the app's AI assistant, Promptfoo's included. A clean result is a real result: when the work is done, it stops instead of spending what's left.
 
 ## What you get
@@ -46,7 +46,7 @@ An engagement folder outside the skill with the scope, app map, attack matrix, P
 ## Before you start
 
 - Permission to test the app. Only point it at apps you're allowed to test.
-- Node 22.22 or later. The agent can install the pinned Promptfoo version (0.125.0) into the engagement folder for you.
+- Node 22.22 or later. The agent installs the pinned Promptfoo version (0.125.0) once, in `~/.promptfoo-assessment/`, and reuses it for every engagement.
 - Your own email set in Promptfoo if you use its hosted generation or grading.
 
 Then tell your agent about the target. The method is in the skill, so you only describe the app: the URL, black box or source (and where), the test accounts and how to switch them, the rules it should enforce, what the run may change, the budget and stop time, and which outside services may see your data. It asks for anything you leave out. For example: *"Use promptfoo-assessment to assess the app at <url>. Black box, these two test accounts, these three rules, resets allowed, Promptfoo's hosted grading, budget of 100 messages, stop at 5pm."*
@@ -61,7 +61,8 @@ Then tell your agent about the target. The method is in the skill, so you only d
 | [references/attack-matrix.md](references/attack-matrix.md) | The plan file, run sizes and when to ask for more |
 | [references/plugins-and-strategies.md](references/plugins-and-strategies.md) | Writing your own attacks, matching built-ins and choosing strategies |
 | [references/promptfoo-workflow.md](references/promptfoo-workflow.md) | Promptfoo setup, commands and lessons from test runs |
-| [references/iteration-and-evidence.md](references/iteration-and-evidence.md) | Verdicts, the second pass and how to compare runs |
+| [references/iteration-and-evidence.md](references/iteration-and-evidence.md) | Verdicts, evidence pages, the second pass and how to compare runs |
+| [scripts/evidence.mjs](scripts/evidence.mjs) | Builds `evidence/` from Promptfoo's results files (Node, no dependencies) |
 | [references/artifacts-and-handoff.md](references/artifacts-and-handoff.md) | Engagement folder layout and what to strip before sharing |
 | [agents/openai.yaml](agents/openai.yaml) | Display name and default prompt for Codex |
 
