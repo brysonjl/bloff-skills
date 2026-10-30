@@ -66,4 +66,4 @@ Then tell your agent about the target. The method is in the skill, so you only d
 | [references/artifacts-and-handoff.md](references/artifacts-and-handoff.md) | Engagement folder layout and what to strip before sharing |
 | [agents/openai.yaml](agents/openai.yaml) | Display name and default prompt for Codex |
 
-Install steps for each agent are in the [repo README](https://github.com/brysonjl/bloff-skills#install).
+Install steps for each agent are in the [repo README](https://github.com/brysonjl/just-agent-things#install).
